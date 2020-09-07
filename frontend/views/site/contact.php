@@ -10,6 +10,14 @@ use yii\captcha\Captcha;
 
 $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
+
+$js = <<<JS
+    $(function(){
+        alert('OK');
+    });
+JS;
+$this->registerJS($js);
+
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>

@@ -55,26 +55,28 @@
             $dataProvider=new ActiveDAtaProvider([
                 'query'=>Promotions::find(),
             ]);
-            return $this->render('index', [
-                'dataProvider'=>$dataProvider
-            ]);
+            return $this->render('index', ['dataProvider'=>$dataProvider]);
         }
         public function actionCreate()
         {
             $model=new PromotionForm;
             if ($model->load(Yii::$app->request->post())){
                 $model->imageFile=UploadedFile::getInstance($model, 'imageFile');
-                if($model->upload()){
+                if($imagePath=$model->upload()){
                     $promotion=new Promotions;
                     $promotion->name=$model->name;
                     $promotion->description=$model->description;
-                    $promotion->urlImage=$model->imagePath();
-                    if ($promotion->save()){
-                        $this->redirect(['promotions/index']);
-                    }
+                    $promotion->urlImage=json_encode($imagePath);
+                    $promotion->save();
+                    $this->redirect('index');
                 }
             }
-            return $this->render('create', ['model'=>$model]);
+            return $this->render('create', [
+                'model'=>$model, 
+                'imagePath_prew'=>[],
+                'imagePath_conf'=>[],
+                'promotion_id'=>'',
+            ]);
         }
         public function actionDelete($id)
         {
@@ -88,18 +90,27 @@
             $promotion=Promotions::findOne(['id'=>$id]);
             if ($model->load(Yii::$app->request->post())){
                 $model->imageFile=UploadedFile::getInstance($model, 'imageFile');
-                if($model->upload()){
+                if($imagePath = $model->upload()){
+                    $promotion->urlImage=json_encode($imagePath);
+                }
                     $promotion->name=$model->name;
                     $promotion->description=$model->description;
-                    $promotion->urlImage=$model->imagePath();
-                    if ($promotion->save()){
-                        $this->redirect(['promotions/index']);
-                    }
-                }
+                    
+                    $promotion->save();
+                    $this->redirect('index');
             }
             $model->name=$promotion->name;
             $model->description=$promotion->description;
-            $model->imageFile=$promotion->urlImage;
-            return $this->render('create', ['model'=>$model]);
+            $imagePath_prew=json_decode($promotion->urlImage);
+            $name_file=explode('/', $imagePath_prew);
+            $imagePath_conf[]=[
+                'key'=>$name_file[count($name_file)-1]
+            ];
+            return $this->render('create', [
+                'model'=>$model, 
+                'imagePath_prew'=>$imagePath_prew,
+                'imagePath_conf'=>$imagePath_conf,
+                'promotion_id'=>$id,
+            ]);        
         }
     }

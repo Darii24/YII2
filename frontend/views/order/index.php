@@ -1,10 +1,11 @@
 <?php
-
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use yii\grid\GridView;
+    $this->title='ORDER';
 ?>
-<div class="site-index">
+
+<div class="order-index">
 
     <div class="jumbotron bg-danger text-white">
         <h1>Congratulations!</h1>

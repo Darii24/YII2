@@ -91,10 +91,11 @@
                         'options' => [
                             'accept' => 'image/*',
                             'multiple' => true,
-                            'max' => 15,
+                            'max' => 5,
                         ],
                         'pluginOptions' => [
-                            'initialPreview'=>[Url::to([$imagePath_prew[0]])],
+                            'initialPreview'=>$imagePath_prew,
+                            'initialPreviewConfig' =>$imagePath_conf,
                             'initialPreviewAsData'=>true,
                             'showCaption' => false,
                             'showRemove' => true,
@@ -102,7 +103,9 @@
                             'removeClass' => 'btn btn-default pull-right',
                             'browseClass' => 'btn btn-primary pull-right',
                             'removeLabel' => 'Delete',
-                            'browseLabel' =>  'Upload'
+                            'browseLabel' =>  'Upload',
+                            'deleteUrl' =>  Url::to(['/select-data/'.$tovar_id.'/file-delete-tovar']),
+                            'overwriteInitial'=>false,
                         ],
                     ]);?>
                 </div>           

@@ -35,7 +35,7 @@
                 'id'=>'ID promo',
                 'name'=>'Promo name',
                 'description'=>'Description',
-                'imageFile'=>'Image',
+                'urlImage' => 'Url Image',
             ];
         }
     }
